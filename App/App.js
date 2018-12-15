@@ -80,7 +80,7 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#444444',
   },
   loader: {
     flex: 1,

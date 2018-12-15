@@ -50,11 +50,11 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    color: 'green',
+    color: '#2196F3',
     marginBottom: 15,
   },
   author: {
     fontSize: 16,
-    color: 'red'
+    color: '#9E9E9E'
   }
 });
