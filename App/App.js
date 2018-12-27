@@ -17,6 +17,7 @@ import {
   TouchableOpacity,
   ToastAndroid
 } from 'react-native';
+import firebase from  'react-native-firebase';
 import CollectionItem from './components/CollectionItem';
 
 export default class App extends Component {
@@ -28,6 +29,11 @@ export default class App extends Component {
     }
   }
   
+  async componentDidMount() {
+    const { user } = await firebase.auth().signInAnonymously();
+    console.warn('User ->', user.toJSON());
+  }
+
   renderItem = ({item}) => {
     return (
       <CollectionItem item={item}></CollectionItem>

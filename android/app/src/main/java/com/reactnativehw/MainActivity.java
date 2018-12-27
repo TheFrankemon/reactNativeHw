@@ -1,4 +1,4 @@
-package com.reactnativehw;
+package com.thefrankemon.reactnativehw;
 
 import com.facebook.react.ReactActivity;
 

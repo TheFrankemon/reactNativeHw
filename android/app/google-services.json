@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "448565249857",
+    "firebase_url": "https://reactnativeyugioh1.firebaseio.com",
+    "project_id": "reactnativeyugioh1",
+    "storage_bucket": "reactnativeyugioh1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:448565249857:android:c8032f9d907f0a3c",
+        "android_client_info": {
+          "package_name": "com.thefrankemon.reactnativehw"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "448565249857-u4jpadqla802tb6av3u30564rv84q58q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCY1Ie7olgKKn55xBEwTZAvk19s_VczpaQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
