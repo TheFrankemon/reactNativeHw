@@ -27,11 +27,8 @@ export default class App extends Component {
       dataSource: [],
       isLoading: true
     }
-  }
-  
-  async componentDidMount() {
-    const { user } = await firebase.auth().signInAnonymously();
-    console.warn('User ->', user.toJSON());
+
+    this.itemsRef = this.getRef().child('ownCards');
   }
 
   renderItem = ({item}) => {
@@ -47,19 +44,38 @@ export default class App extends Component {
     )
   }
 
+  getRef() {
+    return firebase.database().ref();
+  }
+
   componentDidMount() {
-    const url = 'http://www.json-generator.com/api/json/get/ccLAsEcOSq?indent=1'
-    fetch(url)
-      .then((response) => response.json())
-      .then((responseJson) => {
-        this.setState({
-          dataSource: responseJson.book_array,
-          isLoading: false
+    // await firebase.database().ref('ownCards/1').set({
+    //   title: 'Dark Magician'
+    // });
+
+    this.getItems(this.itemsRef);
+  }
+
+  getItems(itemsRef) {
+    itemsRef.on('value', (snapshot) => {
+      let items = [];
+      snapshot.forEach(child => {
+        items.push({
+          title: child.val().title,
+          image: child.val().image,
+          price: child.val().price,
+          rarity: child.val().rarity,
+          set: child.val().set,
+          type: child.val().type,
+          _key: child.key
         })
+      });
+      console.log(items);
+      this.setState({
+        dataSource: items,
+        isLoading: false
       })
-      .catch((error) => {
-        console.log(error);
-      })
+    })
   }
 
   render() {
@@ -70,12 +86,11 @@ export default class App extends Component {
         <ActivityIndicator size="large" color="#330066" animating></ActivityIndicator>
       </View>
       :
-
       <View style={styles.container}>
         <FlatList
           data={this.state.dataSource}
           renderItem={this.renderItem}
-          keyExtractor={(item, index) => index}
+          keyExtractor={(item, index) => index.toString()}
           ItemSeparatorComponent={this.renderSeparator}
         />
       </View>

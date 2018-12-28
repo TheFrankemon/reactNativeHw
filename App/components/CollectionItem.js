@@ -17,14 +17,14 @@ export default class CollectionItem extends Component {
     var item = this.props.item
 
     return (
-      <TouchableOpacity style={styles.collectionItem} onPress={() => ToastAndroid.show(item.book_title, ToastAndroid.SHORT)}>
+      <TouchableOpacity style={styles.collectionItem} onPress={() => ToastAndroid.show(item.title, ToastAndroid.SHORT)}>
         <Image style={styles.image} source={{ uri: item.image }}/>
         <View style={styles.collectionLabels}>
           <Text style={styles.title}>
-            {item.book_title}
+            {item.title}
           </Text>
-          <Text style={styles.author}>
-            {item.author}
+          <Text style={styles.set}>
+            {item.set}
           </Text>
         </View>
       </TouchableOpacity>
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     color: '#2196F3',
     marginBottom: 15,
   },
-  author: {
+  set: {
     fontSize: 16,
     color: '#9E9E9E'
   }
