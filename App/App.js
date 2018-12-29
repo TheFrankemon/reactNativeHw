@@ -9,13 +9,11 @@
 import React, {Component} from 'react';
 import {
   StyleSheet,
-  Text,
   View,
   FlatList,
-  Image,
   ActivityIndicator,
-  TouchableOpacity,
-  ToastAndroid
+  Text,
+  TouchableOpacity
 } from 'react-native';
 import firebase from  'react-native-firebase';
 import CollectionItem from './components/CollectionItem';
@@ -70,7 +68,7 @@ export default class App extends Component {
           _key: child.key
         })
       });
-      console.log(items);
+
       this.setState({
         dataSource: items,
         isLoading: false
@@ -90,9 +88,22 @@ export default class App extends Component {
         <FlatList
           data={this.state.dataSource}
           renderItem={this.renderItem}
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={(_item, index) => index.toString()}
           ItemSeparatorComponent={this.renderSeparator}
         />
+        <TouchableOpacity
+          style={{
+            borderWidth:1,
+            borderColor:'rgba(0,0,0,0.2)',
+            alignItems:'center',
+            justifyContent:'center',
+            width:50,
+            height:50,
+            backgroundColor:'#fff',
+            borderRadius:100,
+          }}>
+          <Text>L</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -111,6 +122,6 @@ const styles = StyleSheet.create({
   separator: {
     height: 1,
     width: '100%',
-    backgroundColor: 'black'
+    backgroundColor: 'gray'
   }
 });

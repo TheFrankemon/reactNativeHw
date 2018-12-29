@@ -20,9 +20,14 @@ export default class CollectionItem extends Component {
       <TouchableOpacity style={styles.collectionItem} onPress={() => ToastAndroid.show(item.title, ToastAndroid.SHORT)}>
         <Image style={styles.image} source={{ uri: item.image }}/>
         <View style={styles.collectionLabels}>
-          <Text style={styles.title}>
-            {item.title}
-          </Text>
+          <View style={styles.topContainer}>
+            <Text style={styles.title}>
+              {item.title}
+            </Text>
+            <Text style={styles.price}>
+              $ {item.price}
+            </Text>
+          </View>
           <Text style={styles.set}>
             {item.set}
           </Text>
@@ -40,18 +45,30 @@ const styles = StyleSheet.create({
   },
   collectionLabels: {
     flex: 1,
-    justifyContent: 'center',
+    flexDirection: 'column',
     marginLeft: 5
   },
+  topContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingTop: 10,
+    paddingLeft: 5,
+    paddingBottom: 10,
+    paddingRight: 5
+  },
   image: {
-    width: 80,
-    height: 80,
+    width: 70,
+    height: 100,
     margin: 5
   },
   title: {
     fontSize: 18,
-    color: '#2196F3',
-    marginBottom: 15,
+    color: '#2196F3'
+  },
+  price: {
+    fontSize: 22,
+    color: 'white'
   },
   set: {
     fontSize: 16,
