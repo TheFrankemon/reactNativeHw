@@ -7,14 +7,8 @@
  */
 
 import React, {Component} from 'react';
-import {
-  StyleSheet,
-  View,
-  FlatList,
-  ActivityIndicator,
-  Text,
-  TouchableOpacity
-} from 'react-native';
+import { StyleSheet, View, FlatList, ActivityIndicator, Text, TouchableHighlight, Modal, Alert } from 'react-native';
+import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
 import firebase from  'react-native-firebase';
 import CollectionItem from './components/CollectionItem';
 
@@ -23,10 +17,16 @@ export default class App extends Component {
     super(props)
     this.state = {
       dataSource: [],
-      isLoading: true
+      isLoading: true,
+      modalVisible: false
     }
 
     this.itemsRef = this.getRef().child('ownCards');
+  }
+
+  setModalVisible(visible) {
+    console.log('visible value is: ' + visible);
+    this.setState({modalVisible: visible});
   }
 
   renderItem = ({item}) => {
@@ -91,19 +91,25 @@ export default class App extends Component {
           keyExtractor={(_item, index) => index.toString()}
           ItemSeparatorComponent={this.renderSeparator}
         />
-        <TouchableOpacity
-          style={{
-            borderWidth:1,
-            borderColor:'rgba(0,0,0,0.2)',
-            alignItems:'center',
-            justifyContent:'center',
-            width:50,
-            height:50,
-            backgroundColor:'#fff',
-            borderRadius:100,
-          }}>
-          <Text>L</Text>
-        </TouchableOpacity>
+        <TouchableHighlight style={styles.actionButton} onPress={() => { this.setModalVisible(true); }}>
+          <Text style={styles.actionButtonLabel}>+</Text>
+        </TouchableHighlight>
+        <View style={{marginTop: 22}}>
+          <Modal
+            animationType="slide"
+            transparent={false}
+            visible={this.state.modalVisible}
+            onRequestClose={() => {}}>
+            <View style={{marginTop: 22}}>
+              <View>
+                <Text>Hello World!</Text>
+                <TouchableHighlight onPress={() => { this.setModalVisible(false); }}>
+                  <Text>Hide Modal</Text>
+                </TouchableHighlight>
+              </View>
+            </View>
+          </Modal>
+        </View>
       </View>
     );
   }
@@ -112,7 +118,7 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#444444',
+    backgroundColor: '#444444'
   },
   loader: {
     flex: 1,
@@ -123,5 +129,21 @@ const styles = StyleSheet.create({
     height: 1,
     width: '100%',
     backgroundColor: 'gray'
+  },
+  actionButton: {
+    position: 'absolute',
+    bottom: 25,
+    right: 25,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    alignItems:'center',
+    justifyContent:'center',
+    backgroundColor: '#00BCD4'
+  },
+  actionButtonLabel: {
+    fontSize: 36,
+    color: 'white',
+    marginBottom: 5
   }
 });
