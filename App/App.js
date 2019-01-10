@@ -7,8 +7,8 @@
  */
 
 import React, {Component} from 'react';
-import { StyleSheet, View, FlatList, ActivityIndicator, Text, TouchableHighlight, Modal, Alert } from 'react-native';
-import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
+import { StyleSheet, View, FlatList, ActivityIndicator, Text, TouchableHighlight, Modal } from 'react-native';
+import { Icon, FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
 import firebase from  'react-native-firebase';
 import CollectionItem from './components/CollectionItem';
 
@@ -18,7 +18,8 @@ export default class App extends Component {
     this.state = {
       dataSource: [],
       isLoading: true,
-      modalVisible: false
+      modalVisible: false,
+      nameInputValue: ''
     }
 
     this.itemsRef = this.getRef().child('ownCards');
@@ -71,7 +72,8 @@ export default class App extends Component {
 
       this.setState({
         dataSource: items,
-        isLoading: false
+        isLoading: false,
+        nameInputValue: ''
       })
     })
   }
@@ -94,18 +96,31 @@ export default class App extends Component {
         <TouchableHighlight style={styles.actionButton} onPress={() => { this.setModalVisible(true); }}>
           <Text style={styles.actionButtonLabel}>+</Text>
         </TouchableHighlight>
-        <View style={{marginTop: 22}}>
+        <View style={styles.modalContent}>
           <Modal
             animationType="slide"
             transparent={false}
             visible={this.state.modalVisible}
             onRequestClose={() => {}}>
-            <View style={{marginTop: 22}}>
-              <View>
-                <Text>Hello World!</Text>
+            <View style={styles.modalContent}>
+              <View style={styles.modalHeader}>
+                <Text style={styles.modalTitle}>New Card</Text>
                 <TouchableHighlight onPress={() => { this.setModalVisible(false); }}>
-                  <Text>Hide Modal</Text>
+                  <Icon name='close' color='#00aced'/>
                 </TouchableHighlight>
+              </View>
+              <View>
+                <FormLabel>Card Name</FormLabel>
+                <FormInput
+                  onChangeText={value => this.setState({ nameInputValue: value })}
+                  containerStyle={styles.inputField}/>
+                <FormValidationMessage>Error message</FormValidationMessage>
+                <FormLabel>Card Price</FormLabel>
+                <FormInput
+                  onChangeText={value => this.setState({ nameInputValue: value })}
+                  keyboardType='numeric'
+                  containerStyle={styles.inputField}/>
+                <FormValidationMessage>Error message</FormValidationMessage>
               </View>
             </View>
           </Modal>
@@ -145,5 +160,19 @@ const styles = StyleSheet.create({
     fontSize: 36,
     color: 'white',
     marginBottom: 5
+  },
+  modalContent: {
+    marginTop: 22
+  },
+  modalHeader: {
+    flexDirection: 'row'
+  },
+  modalTitle: {
+    fontSize: 24,
+    color: '#444444'
+  },
+  inputField: {
+    borderBottomWidth: 2,
+    borderBottomColor: '#00BCD4'
   }
 });
