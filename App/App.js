@@ -7,7 +7,7 @@
  */
 
 import React, {Component} from 'react';
-import { StyleSheet, View, FlatList, ActivityIndicator, Text, TouchableHighlight, Modal } from 'react-native';
+import { StyleSheet, View, FlatList, ActivityIndicator, Text, TouchableHighlight, Modal, Picker } from 'react-native';
 import { Icon, FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
 import firebase from  'react-native-firebase';
 import CollectionItem from './components/CollectionItem';
@@ -19,7 +19,13 @@ export default class App extends Component {
       dataSource: [],
       isLoading: true,
       modalVisible: false,
-      nameInputValue: ''
+      inputValues: {
+        name: '',
+        price: null,
+        type: '',
+        set: '',
+        rarity: ''
+      }
     }
 
     this.itemsRef = this.getRef().child('ownCards');
@@ -110,17 +116,50 @@ export default class App extends Component {
                 </TouchableHighlight>
               </View>
               <View>
-                <FormLabel>Card Name</FormLabel>
+                <FormLabel>Card name</FormLabel>
                 <FormInput
-                  onChangeText={value => this.setState({ nameInputValue: value })}
+                  onChangeText={value => this.setState({inputValues: {name: value}})}
                   containerStyle={styles.inputField}/>
-                <FormValidationMessage>Error message</FormValidationMessage>
-                <FormLabel>Card Price</FormLabel>
+                <FormLabel>Card price</FormLabel>
                 <FormInput
-                  onChangeText={value => this.setState({ nameInputValue: value })}
+                  onChangeText={value => this.setState({inputValues: {price: value}})}
                   keyboardType='numeric'
                   containerStyle={styles.inputField}/>
-                <FormValidationMessage>Error message</FormValidationMessage>
+                <FormLabel>Card type</FormLabel>
+                <Picker
+                  selectedValue={this.state.inputValues.type}
+                  // style={{ height: 50, width: 100 }}
+                  style={{ borderBottomColor: 'red', borderBottomWidth: 1 }}
+                  onValueChange={(itemValue, itemIndex) => this.setState({inputValues: {type: itemValue}})}>
+                  <Picker.Item label="Normal" value="normal"/>
+                  <Picker.Item label="Effect" value="effect"/>
+                  <Picker.Item label="Ritual" value="ritual"/>
+                  <Picker.Item label="Fusion" value="fusion"/>
+                  <Picker.Item label="Synchro" value="synchro"/>
+                  <Picker.Item label="XYZ" value="xyz"/>
+                  <Picker.Item label="Link" value="link"/>
+                  <Picker.Item label="Token" value="token"/>
+                  <Picker.Item label="Spell" value="spell"/>
+                  <Picker.Item label="Trap" value="trap"/>
+                </Picker>
+                <FormLabel>Card set</FormLabel>
+                <FormInput
+                  onChangeText={value => this.setState({inputValues: {set: value}})}
+                  containerStyle={styles.inputField}/>
+                <FormLabel>Card rarity</FormLabel>
+                <Picker
+                  selectedValue={this.state.inputValues.rarity}
+                  // style={{ height: 50, width: 100 }}
+                  onValueChange={(itemValue, itemIndex) => this.setState({inputValues: {rarity: itemValue}})}>
+                  <Picker.Item label="Common Rare" value="common"/>
+                  <Picker.Item label="Rare" value="rare"/>
+                  <Picker.Item label="Super Rare" value="super-rare"/>
+                  <Picker.Item label="Ultra Rare" value="ultra-rare"/>
+                  <Picker.Item label="Secret Rare" value="secret-rare"/>
+                  <Picker.Item label="Ultimate Rare" value="ultimate-rare"/>
+                  <Picker.Item label="Gold Rare" value="gold-rare"/>
+                  <Picker.Item label="Ghost Rare" value="ghost-rare"/>
+                </Picker>
               </View>
             </View>
           </Modal>
@@ -165,7 +204,10 @@ const styles = StyleSheet.create({
     marginTop: 22
   },
   modalHeader: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingRight: 20,
+    paddingLeft: 20
   },
   modalTitle: {
     fontSize: 24,

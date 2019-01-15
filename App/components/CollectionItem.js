@@ -28,8 +28,14 @@ export default class CollectionItem extends Component {
               $ {item.price}
             </Text>
           </View>
+          <Text style={styles.type}>
+            {item.type}
+          </Text>
           <Text style={styles.set}>
             {item.set}
+          </Text>
+          <Text style={styles.set}>
+            {item.rarity}
           </Text>
         </View>
       </TouchableOpacity>
@@ -53,9 +59,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingTop: 10,
-    paddingLeft: 5,
     paddingBottom: 10,
-    paddingRight: 5
+    paddingRight: 10
   },
   image: {
     width: 70,
@@ -65,6 +70,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     color: '#2196F3'
+  },
+  type: {
+    color: '#DDDDDD'
   },
   price: {
     fontSize: 22,
