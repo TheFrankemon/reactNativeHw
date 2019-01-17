@@ -32,7 +32,6 @@ export default class App extends Component {
   }
 
   setModalVisible(visible) {
-    console.log('visible value is: ' + visible);
     this.setState({modalVisible: visible});
   }
 
@@ -53,11 +52,20 @@ export default class App extends Component {
     return firebase.database().ref();
   }
 
-  componentDidMount() {
-    // await firebase.database().ref('ownCards/1').set({
-    //   title: 'Dark Magician'
-    // });
+  async saveItem() {
+    await firebase.database().ref('ownCards').push({
+      title: this.state.inputValues.name,
+      price: this.state.inputValues.price,
+      type: this.state.inputValues.type,
+      set: this.state.inputValues.set,
+      rarity: this.state.inputValues.rarity,
+      image: 'https://www.yugiohcardmaker.net/ycmaker/createcard.jpg'
+    });
 
+    this.setModalVisible(false);
+  }
+
+  componentDidMount() {
     this.getItems(this.itemsRef);
   }
 
@@ -118,49 +126,63 @@ export default class App extends Component {
               <View>
                 <FormLabel>Card name</FormLabel>
                 <FormInput
-                  onChangeText={value => this.setState({inputValues: {name: value}})}
+                  onChangeText={value => this.setState((prevState) => ({
+                    inputValues: Object.assign({}, prevState.inputValues, {name: value})
+                  }))}
                   containerStyle={styles.inputField}/>
                 <FormLabel>Card price</FormLabel>
                 <FormInput
-                  onChangeText={value => this.setState({inputValues: {price: value}})}
+                  onChangeText={value => this.setState((prevState) => ({
+                    inputValues: Object.assign({}, prevState.inputValues, {price: value})
+                  }))}
                   keyboardType='numeric'
                   containerStyle={styles.inputField}/>
                 <FormLabel>Card type</FormLabel>
-                <Picker
-                  selectedValue={this.state.inputValues.type}
-                  // style={{ height: 50, width: 100 }}
-                  style={{ borderBottomColor: 'red', borderBottomWidth: 1 }}
-                  onValueChange={(itemValue, itemIndex) => this.setState({inputValues: {type: itemValue}})}>
-                  <Picker.Item label="Normal" value="normal"/>
-                  <Picker.Item label="Effect" value="effect"/>
-                  <Picker.Item label="Ritual" value="ritual"/>
-                  <Picker.Item label="Fusion" value="fusion"/>
-                  <Picker.Item label="Synchro" value="synchro"/>
-                  <Picker.Item label="XYZ" value="xyz"/>
-                  <Picker.Item label="Link" value="link"/>
-                  <Picker.Item label="Token" value="token"/>
-                  <Picker.Item label="Spell" value="spell"/>
-                  <Picker.Item label="Trap" value="trap"/>
-                </Picker>
+                <View style={[styles.inputField, styles.picker]}>
+                  <Picker
+                    selectedValue={this.state.inputValues.type}
+                    onValueChange={(itemValue, itemIndex) => this.setState((prevState) => ({
+                      inputValues: Object.assign({}, prevState.inputValues, {type: itemValue})
+                    }))}>
+                    <Picker.Item label="Normal" value="Normal"/>
+                    <Picker.Item label="Effect" value="Effect"/>
+                    <Picker.Item label="Ritual" value="Ritual"/>
+                    <Picker.Item label="Fusion" value="Fusion"/>
+                    <Picker.Item label="Synchro" value="Synchro"/>
+                    <Picker.Item label="XYZ" value="XYZ"/>
+                    <Picker.Item label="Link" value="Link"/>
+                    <Picker.Item label="Token" value="Token"/>
+                    <Picker.Item label="Spell" value="Spell"/>
+                    <Picker.Item label="Trap" value="Trap"/>
+                  </Picker>
+                </View>
                 <FormLabel>Card set</FormLabel>
                 <FormInput
-                  onChangeText={value => this.setState({inputValues: {set: value}})}
+                  onChangeText={value => this.setState((prevState) => ({
+                    inputValues: Object.assign({}, prevState.inputValues, {set: value})
+                  }))}
                   containerStyle={styles.inputField}/>
                 <FormLabel>Card rarity</FormLabel>
-                <Picker
-                  selectedValue={this.state.inputValues.rarity}
-                  // style={{ height: 50, width: 100 }}
-                  onValueChange={(itemValue, itemIndex) => this.setState({inputValues: {rarity: itemValue}})}>
-                  <Picker.Item label="Common Rare" value="common"/>
-                  <Picker.Item label="Rare" value="rare"/>
-                  <Picker.Item label="Super Rare" value="super-rare"/>
-                  <Picker.Item label="Ultra Rare" value="ultra-rare"/>
-                  <Picker.Item label="Secret Rare" value="secret-rare"/>
-                  <Picker.Item label="Ultimate Rare" value="ultimate-rare"/>
-                  <Picker.Item label="Gold Rare" value="gold-rare"/>
-                  <Picker.Item label="Ghost Rare" value="ghost-rare"/>
-                </Picker>
+                <View style={[styles.inputField, styles.picker]}>
+                  <Picker
+                    selectedValue={this.state.inputValues.rarity}
+                    onValueChange={(itemValue, itemIndex) => this.setState((prevState) => ({
+                      inputValues: Object.assign({}, prevState.inputValues, {rarity: itemValue})
+                    }))}>
+                    <Picker.Item label="Common Rare" value="Common Rare"/>
+                    <Picker.Item label="Rare" value="Rare"/>
+                    <Picker.Item label="Super Rare" value="Super Rare"/>
+                    <Picker.Item label="Ultra Rare" value="Ultra Rare"/>
+                    <Picker.Item label="Secret Rare" value="Secret Rare"/>
+                    <Picker.Item label="Ultimate Rare" value="Ultimate Rare"/>
+                    <Picker.Item label="Gold Rare" value="Gold Rare"/>
+                    <Picker.Item label="Ghost Rare" value="Ghost Rare"/>
+                  </Picker>
+                </View>
               </View>
+              <TouchableHighlight style={styles.modalActionButton} onPress={() => { this.saveItem(); }}>
+                <Icon name='save' color='white'/>
+              </TouchableHighlight>
             </View>
           </Modal>
         </View>
@@ -195,6 +217,17 @@ const styles = StyleSheet.create({
     justifyContent:'center',
     backgroundColor: '#00BCD4'
   },
+  modalActionButton: {
+    position: 'absolute',
+    bottom: -100,
+    right: 25,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    alignItems:'center',
+    justifyContent:'center',
+    backgroundColor: '#00BCD4'
+  },
   actionButtonLabel: {
     fontSize: 36,
     color: 'white',
@@ -216,5 +249,8 @@ const styles = StyleSheet.create({
   inputField: {
     borderBottomWidth: 2,
     borderBottomColor: '#00BCD4'
-  }
+  },
+  picker: {
+    marginHorizontal: 15
+  },
 });
